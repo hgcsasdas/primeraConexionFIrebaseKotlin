@@ -1,5 +1,6 @@
 package com.example.primeraconexionfirebase.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.VerticalAlignmentLine
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+/*import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp*/
 import androidx.navigation.NavController
 import com.example.primeraconexionfirebase.navigation.PantallasApp
 import kotlinx.coroutines.launch
@@ -35,11 +38,11 @@ fun FirstScreen(navController: NavController){
                 onActionButtonClick = { /* */ }
             )
         },
-        drawerContent = { // Contenido del drawer
+        /*drawerContent = { // Contenido del drawer
             DrawerContent { // Cerrar drawer
                 scope.launch { scaffoldState.drawerState.close() }
             }
-        }
+        }*/
 
     ){
         BodyContent(navController)
@@ -58,7 +61,7 @@ fun TopBarGeneral(
                 }
             },
             title = { Text(text = "App simple Dragones") },
-            actions = {
+            /*actions = {
                 IconButton(onClick = { }) {
                     Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Favorito")
                 }
@@ -68,10 +71,10 @@ fun TopBarGeneral(
                 IconButton(onClick = { }) {
                     Icon(imageVector = Icons.Filled.MoreVert, contentDescription = "Más")
                 }
-            }
+            }*/
         )
 }
-
+/*
 @Composable
 fun DrawerContent(closeDrawer: () -> Unit) {
     val sections = listOf(
@@ -103,7 +106,7 @@ fun DrawerContent(closeDrawer: () -> Unit) {
             }
         }
     }
-}
+}*/
 @Composable
 fun BodyContent(navController: NavController){
     Column(
@@ -111,11 +114,52 @@ fun BodyContent(navController: NavController){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "Hola")
-        Button(onClick = {
+        Text(text = "Aplicación de dragones")
+
+        Spacer(modifier = Modifier.padding(16.dp))
+
+        Button(
+            onClick = {
             navController.navigate(route = PantallasApp.Aniadir.route)
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Blue,
+                contentColor = Color.White
+            ),
+            border = BorderStroke(1.dp, Color.Black)
+        ) {
+            Text(text = "Añadir Dragones")
+        }
+
+        Spacer(modifier = Modifier.padding(16.dp))
+
+        Button(onClick = {
+            navController.navigate(route = PantallasApp.Ver.route)
         }) {
-            Text(text = "pwepe")
+            Text(text = "Ver Dragones")
+        }
+        Spacer(modifier = Modifier.padding(16.dp))
+
+        Button(onClick = {
+            navController.navigate(route = PantallasApp.ConsultarDragon.route)
+        }) {
+            Text(text = "Consultar un dragon")
+        }
+
+        Spacer(modifier = Modifier.padding(16.dp))
+
+        Button(onClick = {
+            navController.navigate(route = PantallasApp.Actualizar.route)
+        }) {
+            Text(text = "Actualizar Dragones")
+        }
+
+        Spacer(modifier = Modifier.padding(16.dp))
+
+        Button(onClick = {
+            navController.navigate(route = PantallasApp.Eliminar.route)
+        }) {
+            Text(text = "Eliminar Dragones")
         }
     }
 }

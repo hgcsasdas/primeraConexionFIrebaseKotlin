@@ -16,5 +16,17 @@ fun NavegacionApp(){
         composable(route= PantallasApp.Aniadir.route){
             Aniadir(navController)
         }
+        composable(route= PantallasApp.Ver.route){
+            Ver(navController)
+        }
+        composable(route= PantallasApp.Actualizar.route){
+            Actualizar(navController)
+        }
+        composable(route= PantallasApp.Eliminar.route){
+            Eliminar(navController)
+        }
+        composable(route= PantallasApp.ConsultarDragon.route){
+            ConsultarDragon(navController)
+        }
     }
 }

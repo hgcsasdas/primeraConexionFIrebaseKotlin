@@ -1,8 +1,9 @@
 package com.example.primeraconexionfirebase.screens
 
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,20 +12,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.primeraconexionfirebase.navigation.PantallasApp
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.launch
-import androidx.compose.ui.platform.*
-import androidx.compose.ui.text.input.*
 
 
 @Composable
-fun Aniadir(navController: NavController){
+fun Actualizar(navController: NavController){
     Scaffold (
+        modifier = Modifier.background(color = Color.LightGray),
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navController.navigate(route = PantallasApp.FirstScreen.route)
@@ -45,14 +44,13 @@ fun Aniadir(navController: NavController){
             }
         }
 
-)   {
-        SecondBodyContent(navController)
+        )   {
+        ModificarDragon()
     }
-
 }
 
 @Composable
-fun SecondBodyContent(navController: NavController){
+fun ModificarDragon(){
 
     val db = FirebaseFirestore.getInstance()
 
@@ -63,31 +61,25 @@ fun SecondBodyContent(navController: NavController){
     var color_dragon by remember { mutableStateOf("") }
     var peso_dragon by remember { mutableStateOf("") }
     var genero_dragon by remember { mutableStateOf("") }
-    //var genero_dragon = remember { mutableStateOf("") }
-
-    val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
-
-    /*val genero = listOf("macho", "hembra", "nulo")
-    val generoIsSelectedItem: (String) -> Boolean = { genero_dragon.value == it }
-    val generoOnChangeState: (String) -> Unit = { genero_dragon.value = it }*/
+    val context = LocalContext.current
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 100.dp)
+            .padding(start= 10.dp)
+            .padding(end= 10.dp)
+    ) {
         Text(
-            text = "Guardar dragon",
+            text = "Modificar Dragon",
             fontWeight = FontWeight.ExtraBold
         )
-
         Spacer(modifier = Modifier.size(20.dp))
-
         OutlinedTextField(
-            value = nombre_dragon ,
-            onValueChange ={ nombre_dragon  = it },
-            label = { Text("Nombre Dragón") },
+            value = nombre_dragon,
+            onValueChange = { nombre_dragon = it },
+            label = { Text("Introduce el nombre del Dragón") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
@@ -131,31 +123,7 @@ fun SecondBodyContent(navController: NavController){
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
-        /*Text(text = "¿Qué género tiene?: ${genero_dragon.value.ifEmpty { " " }}")
-        Spacer(modifier = Modifier.padding(10.dp))
-        genero.forEach { item ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .selectable(
-                        selected = generoIsSelectedItem(item),
-                        onClick = { generoOnChangeState(item) },
-                        role = Role.RadioButton
-                    )
-                    .padding(8.dp)
-            ) {
-                RadioButton(
-                    selected = generoIsSelectedItem(item),
-                    onClick = null
-                )
-                Text(
-                    text = item,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        }*/
-        Spacer(modifier = Modifier.size(5.dp))
-
+        Spacer(modifier = Modifier.size(10.dp))
         val dato = hashMapOf(
             "nombre" to nombre_dragon,
             "raza" to raza_dragon,
@@ -163,24 +131,31 @@ fun SecondBodyContent(navController: NavController){
             "peso" to peso_dragon,
             "genero" to genero_dragon
         )
-        val context = LocalContext.current
-
         Button(
             onClick = {
                 db.collection(nombre_coleccion)
                     .document(nombre_dragon)
                     .set(dato)
                     .addOnSuccessListener {
-                        Toast.makeText(context, "Añadido correctamente", Toast.LENGTH_LONG).show()
-                        navController.navigate(route = PantallasApp.Ver.route)
+                        Toast.makeText(context, "Datos actualizados correctamente", Toast.LENGTH_LONG).show()
+                        nombre_dragon = ""
+                        raza_dragon = ""
+                        color_dragon = ""
+                        peso_dragon = ""
+                        genero_dragon = ""
                     }
                     .addOnFailureListener {
-                        Toast.makeText(context, "No se ha podido añadir", Toast.LENGTH_LONG).show()
-                    }
-                }
-        ) {
-            Text(text = "Añadir Dragón")
+                        Toast.makeText(context, "No se ha podido actualizar", Toast.LENGTH_LONG).show()
+                    } },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Blue,
+                contentColor = Color.White
+            ),
+            border = BorderStroke(1.dp, Color.Black)
+        )
+        {
+            Text(text = "Modificar")
         }
+        Spacer(modifier = Modifier.size(5.dp))
     }
 }
-
