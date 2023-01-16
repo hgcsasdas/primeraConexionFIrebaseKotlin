@@ -1,7 +1,5 @@
 package com.example.primeraconexionfirebase.screens
 
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-//import com.example.primeraconexionfirebase.model.Dragon
 import com.example.primeraconexionfirebase.navigation.PantallasApp
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -45,6 +42,7 @@ fun ConsultarDragon(navController: NavController) {
                 )
             ) {
                 /* Bottom app bar content */
+                Text(text = "Consultar Dragon", modifier = Modifier.padding(10.dp))
             }
         }
     ){
@@ -60,13 +58,26 @@ fun ConsultarUnDragon(){
     val gradientColors = listOf(Color(0xFF413846), Color(0xFF807C7C))
     val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
 
+    //DECLARAMOS LA VARIABLE QUE VA A RECOGER LOS DATOS DE LA CONSULTA CON EL ESTADO REMEMBER
+    var datos by remember { mutableStateOf("") }
+    var nombre_dragon by remember { mutableStateOf("") }
+    var color_dragon by remember { mutableStateOf("") }
+    var genero_dragon by remember { mutableStateOf("") }
+    var peso_dragon by remember { mutableStateOf("") }
+    var raza_dragon by remember { mutableStateOf("") }
+
+    var nombre_busqueda by remember { mutableStateOf("") }
+    val field_busqueda ="nombre"
+
     Column(
 
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
+            .background(
+                brush = Brush.horizontalGradient(colors = gradientColors),
+            )
 
     ) {
 
@@ -77,16 +88,6 @@ fun ConsultarUnDragon(){
 
         Spacer(modifier = Modifier.size(20.dp))
 
-        //DECLARAMOS LA VARIABLE QUE VA A RECOGER LOS DATOS DE LA CONSULTA CON EL ESTADO REMEMBER
-        var datos by remember { mutableStateOf("") }
-        var nombre_dragon by remember { mutableStateOf("") }
-        var color_dragon by remember { mutableStateOf("") }
-        var genero_dragon by remember { mutableStateOf("") }
-        var peso_dragon by remember { mutableStateOf("") }
-        var raza_dragon by remember { mutableStateOf("") }
-
-        var nombre_busqueda by remember { mutableStateOf("") }
-        val field_busqueda ="nombre"
         OutlinedTextField(
             value = nombre_busqueda,
             onValueChange = { nombre_busqueda = it },
@@ -102,7 +103,7 @@ fun ConsultarUnDragon(){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(colors = listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 //.width(300.dp)

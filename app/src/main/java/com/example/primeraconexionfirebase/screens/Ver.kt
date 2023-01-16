@@ -7,10 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -48,15 +46,17 @@ fun Ver(navController: NavController){
         isFloatingActionButtonDocked = true,
         bottomBar = {
             BottomAppBar(
-                // Defaults to null, that is, No cutout
                 cutoutShape = MaterialTheme.shapes.small.copy(
                     CornerSize(percent = 50)
                 )
             ) {
-                /* Bottom app bar content */
+                /* Bottom app bar contenido */
+                Text(text = "Ver Dragones", modifier = Modifier.padding(10.dp))
             }
         }
     ){
+        val context = LocalContext.current
+
         val db = FirebaseFirestore.getInstance()
         var listaDinamica = mutableStateListOf<Dragones?>()
         // HACEMOS LA CONSULTA A LA COLECCION CON GET
@@ -66,35 +66,32 @@ fun Ver(navController: NavController){
             // RECORRO TODOS LOS DATOS ENCONTRADOS EN LA COLECCIÓN Y LOS ALMACENO EN DATOS
             .addOnSuccessListener {
                     queryDocumentSnapshots ->
-                // after getting the data we are calling
-                // on success method
-                // and inside this method we are checking
-                // if the received query snapshot is empty or not.
+                /*Después de coger los datos
+                * si son accedidos correctamente
+                * y despés se comprueba si está vacío o no*/
                 if (!queryDocumentSnapshots.isEmpty) {
-                    // if the snapshot is not empty we are
-                    // hiding our progress bar and adding
-                    // our data in a list.
-                    // loadingPB.setVisibility(View.GONE)
+                    /*Si los datos no están vacíos
+                    * añadimos los datos a una lista*/
                     val list = queryDocumentSnapshots.documents
                     for (d in list) {
-                        // after getting this list we are passing that
-                        // list to our object class.
+                        /*Después le pasamos la lista a los objetos y convertimos los datos a objeto*/
                         val c: Dragones? = d.toObject(Dragones::class.java)
                         //println(c.toString())
-                        // and we will pass this object class inside
-                        // our arraylist which we have created for list view.
+                        /*le pasamos el objeto a la lista y  lo añadimos*/
                         listaDinamica.add(c)
                     }
                 } else {
                 }
             }
-            // if we don't get any data or any error
-            // we are displaying a toast message
-            // that we donot get any data
+            /*desplegamos un mensaje de que no hay datos disponibles*/
             .addOnFailureListener {
+                Toast.makeText(
+                    context,
+                    "No hay datos disponibles",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-        // on below line we are calling method to display UI
-        firebaseUI(LocalContext.current,  listaDinamica)
+        firebaseUI(context,  listaDinamica)
     }
 //MostrarDragones()
 }
@@ -105,76 +102,52 @@ fun Ver(navController: NavController){
 fun firebaseUI(context: Context, dragonList: SnapshotStateList<Dragones?>) {
     val gradientColors = listOf(Color(0xFF413846), Color(0xFF807C7C))
     val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
-    // on below line creating a column
-    // to display our retrieved list.
     Column(
-        // adding modifier for our column
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .background(Color.LightGray),
-        // on below line adding vertical and
-        // horizontal alignment for column.
+            .background(
+                brush = Brush.horizontalGradient(colors = gradientColors),
+            ),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // on below line we are
-        // calling lazy column
-        // for displaying listview.
-        LazyColumn {
-            // on below line we are setting data
-            // for each item of our listview.
+        //Llamo a la lazyColumn
+        LazyColumn(
+            modifier = Modifier.background(
+                brush = Brush.horizontalGradient(colors = gradientColors),
+                shape = roundCornerShape
+            )
+        ) {
+            // de cada dato creo una carta
             itemsIndexed(dragonList) { index, item ->
-                // on below line we are creating
-                // a card for our list view item.
                 Card(
                     onClick = {
-                        // inside on click we are
-                        // displaying the toast message.
                         Toast.makeText(
                             context,
                             dragonList[index]?.nombre + " selected..",
                             Toast.LENGTH_SHORT
                         ).show()
                     },
-                    // on below line we are adding
-                    // padding from our all sides.
                     modifier = Modifier
                         .padding(8.dp)
                         .background(
                             brush = Brush.horizontalGradient(colors = gradientColors),
                             shape = roundCornerShape
                         ),
-
-                    // on below line we are adding
-                    // elevation for the card.
                     elevation = 6.dp
                 ) {
-                    // on below line we are creating
-                    // a row for our list view item.
                     Column(
-                        // for our row we are adding modifier
-                        // to set padding from all sides.
                         modifier = Modifier
                             .padding(8.dp)
                             .fillMaxWidth()
                     ) {
-                        // on below line inside row we are adding spacer
                         Spacer(modifier = Modifier.width(5.dp))
-                        // on below line we are displaying course name.
+                        //hago un display del nombre
                         dragonList[index]?.nombre?.let {
                             Text(
-                                // inside the text on below line we are
-                                // setting text as the language name
-                                // from our modal class.
                                 text = it,
-
-                                // on below line we are adding padding
-                                // for our text from all sides.
                                 modifier = Modifier.padding(4.dp),
-
-                                // on below line we are adding
-                                // color for our text
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = TextStyle(
@@ -182,23 +155,15 @@ fun firebaseUI(context: Context, dragonList: SnapshotStateList<Dragones?>) {
                                 )
                             )
                         }
-                        // adding spacer on below line.
+
                         Spacer(modifier = Modifier.height(5.dp))
 
-                        // on below line displaying text for course duration
                         dragonList[index]?.raza?.let {
                             Text(
-                                // inside the text on below line we are
-                                // setting text as the language name
-                                // from our modal class.
                                 text = "Raza = $it",
 
-                                // on below line we are adding padding
-                                // for our text from all sides.
                                 modifier = Modifier.padding(4.dp),
 
-                                // on below line we are
-                                // adding color for our text
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = TextStyle(
@@ -206,42 +171,29 @@ fun firebaseUI(context: Context, dragonList: SnapshotStateList<Dragones?>) {
                                 )
                             )
                         }
-                        // adding spacer on below line.
+
                         Spacer(modifier = Modifier.width(5.dp))
 
-                        // on below line displaying text for course description
                         dragonList[index]?.color?.let {
                             Text(
-                                // inside the text on below line we are
-                                // setting text as the language name
-                                // from our modal class.
                                 text = "Color = $it",
 
-                                // on below line we are adding padding
-                                // for our text from all sides.
                                 modifier = Modifier.padding(4.dp),
 
-                                // on below line we are adding color for our text
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = TextStyle(fontSize = 15.sp)
                             )
                         }
+
                         Spacer(modifier = Modifier.width(5.dp))
 
-                        // on below line displaying text for course description
                         dragonList[index]?.peso?.let {
                             Text(
-                                // inside the text on below line we are
-                                // setting text as the language name
-                                // from our modal class.
-                                text = "Peso = $it",
+                                text = "Peso = $it kg",
 
-                                // on below line we are adding padding
-                                // for our text from all sides.
                                 modifier = Modifier.padding(4.dp),
 
-                                // on below line we are adding color for our text
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = TextStyle(fontSize = 15.sp)
@@ -249,19 +201,13 @@ fun firebaseUI(context: Context, dragonList: SnapshotStateList<Dragones?>) {
                         }
                         Spacer(modifier = Modifier.width(5.dp))
 
-                        // on below line displaying text for course description
                         dragonList[index]?.genero?.let {
                             Text(
-                                // inside the text on below line we are
-                                // setting text as the language name
-                                // from our modal class.
-                                text = "Genero = $it kg",
 
-                                // on below line we are adding padding
-                                // for our text from all sides.
+                                text = "Genero = $it",
+
                                 modifier = Modifier.padding(4.dp),
 
-                                // on below line we are adding color for our text
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = TextStyle(fontSize = 15.sp)
@@ -274,67 +220,3 @@ fun firebaseUI(context: Context, dragonList: SnapshotStateList<Dragones?>) {
         }
     }
 }
-/*
-@Composable
-fun MostrarDragones(){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 100.dp)
-            .padding(start = 5.dp)
-            .padding(end = 5.dp)
-
-    ) {
-
-        Text(
-            text = "Seleccionar todos los datos en Cloud FireStore",
-            fontWeight = FontWeight.ExtraBold
-        )
-
-        Spacer(modifier = Modifier.size(20.dp))
-
-        //DECLARAMOS LA VARIABLE QUE VA A RECOGER LOS DATOS DE LA CONSULTA CON EL ESTADO REMEMBER
-
-
-        Column(
-            modifier = Modifier
-                .padding(all = 20.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-
-            Button(
-                onClick = {
-
-                    // VACIAMOS VARIABLE AL DAR AL BOTON
-
-
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Blue,
-                    contentColor = Color.White
-                ),
-                border = BorderStroke(1.dp, Color.Black)
-            )
-            {
-
-                Text(text = "Cargar Datos")
-            }
-
-            Spacer(modifier = Modifier.size(10.dp))
-
-            // PINTAMOS EL RESULTADO DE LA CONSULTA A LA BASE DE DATOS
-
-            for( i in listaDinamica){
-                Text(text = i.getNombreDragon())
-            }
-
-            Text(text = datos)
-            Spacer(modifier = Modifier.padding(16.dp))
-
-
-            
-        }
-    }
-
-}
-*/

@@ -47,6 +47,7 @@ fun Actualizar(navController: NavController){
                 )
             ) {
                 /* Bottom app bar content */
+                Text(text = "Actualizar Dragon", modifier = Modifier.padding(10.dp))
             }
         }
 
@@ -76,7 +77,9 @@ fun ModificarDragon(){
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
+            .background(
+                brush = Brush.horizontalGradient(colors = gradientColors)
+            )
     ) {
         Text(
             text = "Modificar Dragon",
@@ -141,7 +144,7 @@ fun ModificarDragon(){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(colors = listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 .fillMaxWidth()

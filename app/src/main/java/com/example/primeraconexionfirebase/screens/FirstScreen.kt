@@ -120,7 +120,9 @@ fun BodyContent(navController: NavController){
     val roundCornerShape = RoundedCornerShape(topEnd = 60.dp, bottomStart = 30.dp)
     Column(
         modifier = Modifier
-            .background(Color.Gray)
+            .background(
+                brush = Brush.horizontalGradient(colors = gradientColors),
+            )
             .size(400.dp, 800.dp)
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,
@@ -132,7 +134,7 @@ fun BodyContent(navController: NavController){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(colors = listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 .clip(roundCornerShape)
@@ -153,7 +155,7 @@ fun BodyContent(navController: NavController){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(colors = listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 .fillMaxWidth()
@@ -175,7 +177,7 @@ fun BodyContent(navController: NavController){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(colors = listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 .clip(roundCornerShape)
@@ -196,7 +198,7 @@ fun BodyContent(navController: NavController){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(colors = listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 .clip(roundCornerShape)
@@ -217,7 +219,7 @@ fun BodyContent(navController: NavController){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(colors = listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 .clip(roundCornerShape)

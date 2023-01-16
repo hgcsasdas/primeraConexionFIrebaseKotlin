@@ -49,6 +49,7 @@ fun Aniadir(navController: NavController){
                 )
             ) {
                 /* Bottom app bar content */
+                Text(text = "Añadir Dragon", modifier = Modifier.padding(10.dp))
             }
         }
 
@@ -81,7 +82,10 @@ fun SecondBodyContent(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
+            .background(
+                brush = Brush.horizontalGradient(colors = gradientColors),
+                shape = roundCornerShape
+            )
         ,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -167,7 +171,7 @@ fun SecondBodyContent(navController: NavController){
         //Spacer(modifier = Modifier.size(5.dp))
 
         val dato = hashMapOf(
-               "nombre" to nombre_dragon,
+            "nombre" to nombre_dragon,
             "raza" to raza_dragon,
             "color" to color_dragon,
             "peso" to peso_dragon,
@@ -178,7 +182,7 @@ fun SecondBodyContent(navController: NavController){
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(listOf(Color(0xFFA8A8A8), Color(0xFF807C7C))),
                     shape = roundCornerShape
                 )
                 .fillMaxWidth()
@@ -186,14 +190,14 @@ fun SecondBodyContent(navController: NavController){
                 .clickable {
                     if (nombre_dragon.isEmpty()) {
                         Toast.makeText(context, "Nombre en blanco", Toast.LENGTH_LONG).show()
-                    }else if(color_dragon.isEmpty()){
-                        Toast.makeText(context, "Color en blanco", Toast.LENGTH_LONG).show()
-                    }else if(genero_dragon.isEmpty()){
-                        Toast.makeText(context, "Genero en blanco", Toast.LENGTH_LONG).show()
-                    }else if(peso_dragon.isEmpty()){
-                        Toast.makeText(context, "Peso en blanco", Toast.LENGTH_LONG).show()
                     }else if(raza_dragon.isEmpty()){
                         Toast.makeText(context, "Raza en blanco", Toast.LENGTH_LONG).show()
+                    }else if(color_dragon.isEmpty()){
+                        Toast.makeText(context, "Color en blanco", Toast.LENGTH_LONG).show()
+                    }else if(peso_dragon.isEmpty()){
+                        Toast.makeText(context, "Peso en blanco", Toast.LENGTH_LONG).show()
+                    }else if(genero_dragon.isEmpty()){
+                        Toast.makeText(context, "Genero en blanco", Toast.LENGTH_LONG).show()
                     }else{
                         db.collection(nombre_coleccion)
                             .document(nombre_dragon)

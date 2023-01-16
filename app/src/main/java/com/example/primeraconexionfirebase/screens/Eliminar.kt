@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +46,7 @@ fun Eliminar(navController: NavController){
                 )
             ) {
                 /* Bottom app bar content */
+                Text(text = "Eliminar Dragon", modifier = Modifier.padding(10.dp))
             }
         }
 
@@ -68,14 +70,18 @@ fun EliminarDragon(){
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
+            .background(
+                brush = Brush.horizontalGradient(colors = gradientColors),
+            )
 
     ) {
+        Spacer(modifier = Modifier.size(20.dp))
+
         Text(
             text = "Eliminar Dragon",
             fontWeight = FontWeight.ExtraBold
         )
-        Spacer(modifier = Modifier.size(10.dp))
+        Spacer(modifier = Modifier.size(20.dp))
         OutlinedTextField(
             value = nombre_dragon,
             onValueChange = { nombre_dragon = it },
@@ -83,25 +89,35 @@ fun EliminarDragon(){
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
-        Spacer(modifier = Modifier.size(5.dp))
+        Spacer(modifier = Modifier.size(20.dp))
         Box(
             modifier = Modifier
                 .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            Color(0xFFA8A8A8),
+                            Color(0xFF807C7C)
+                        )
+                    ),
                     shape = roundCornerShape
                 )
                 .fillMaxWidth()
                 .clip(roundCornerShape)
                 .clickable {
                     if (nombre_dragon.isNotBlank()) {
-                        db.collection(nombre_coleccion)
+                        db
+                            .collection(nombre_coleccion)
                             .document(nombre_dragon)
                             .delete()
                             .addOnSuccessListener {
-                                Toast.makeText(context, "Borrado correctamente", Toast.LENGTH_LONG).show()
+                                Toast
+                                    .makeText(context, "Borrado correctamente", Toast.LENGTH_LONG)
+                                    .show()
                             }
                             .addOnFailureListener {
-                                Toast.makeText(context, "No se ha podido borrar", Toast.LENGTH_LONG).show()
+                                Toast
+                                    .makeText(context, "No se ha podido borrar", Toast.LENGTH_LONG)
+                                    .show()
                             }
                         nombre_dragon = ""
                     }
