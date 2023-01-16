@@ -1,9 +1,9 @@
 package com.example.primeraconexionfirebase.model
 
 data class Dragones(
-    var nombreDragon:String? = "",
-    var colorDragon:String? = "",
-    var generoDragon:String? = "",
-    var pesoDragon:String? = "",
-    var razaDragon:String? = ""
+    var color:String? = "",
+    var nombre:String? = "",
+    var genero:String? = "",
+    var peso:String? = "",
+    var raza:String? = ""
 )

@@ -1,7 +1,10 @@
 package com.example.primeraconexionfirebase.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -12,8 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 /*import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp*/
@@ -109,57 +116,123 @@ fun DrawerContent(closeDrawer: () -> Unit) {
 }*/
 @Composable
 fun BodyContent(navController: NavController){
+    val gradientColors = listOf(Color(0xFF413846), Color(0xFF807C7C))
+    val roundCornerShape = RoundedCornerShape(topEnd = 60.dp, bottomStart = 30.dp)
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .background(Color.Gray)
+            .size(400.dp, 800.dp)
+            .padding(20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Text(text = "Aplicación de dragones")
+    ) {
+        Text(text = "Aplicación de gestión de dragones")
 
         Spacer(modifier = Modifier.padding(16.dp))
-
-        Button(
-            onClick = {
-            navController.navigate(route = PantallasApp.Aniadir.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Blue,
-                contentColor = Color.White
-            ),
-            border = BorderStroke(1.dp, Color.Black)
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    shape = roundCornerShape
+                )
+                .clip(roundCornerShape)
+                .clickable {
+                    navController.navigate(route = PantallasApp.Aniadir.route)
+                }
+                .padding(PaddingValues(horizontal = 60.dp, vertical = 16.dp)),
+            contentAlignment = Alignment.Center
         ) {
-            Text(text = "Añadir Dragones")
-        }
-
-        Spacer(modifier = Modifier.padding(16.dp))
-
-        Button(onClick = {
-            navController.navigate(route = PantallasApp.Ver.route)
-        }) {
-            Text(text = "Ver Dragones")
+            Text(
+                text = "Añadir Dragones",
+                fontSize = 26.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
         }
         Spacer(modifier = Modifier.padding(16.dp))
-
-        Button(onClick = {
-            navController.navigate(route = PantallasApp.ConsultarDragon.route)
-        }) {
-            Text(text = "Consultar un dragon")
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    shape = roundCornerShape
+                )
+                .fillMaxWidth()
+                .clip(roundCornerShape)
+                .clickable {
+                    navController.navigate(route = PantallasApp.Ver.route)
+                }
+                .padding(PaddingValues(horizontal = 60.dp, vertical = 16.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Ver Dragones",
+                fontSize = 26.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
         }
-
         Spacer(modifier = Modifier.padding(16.dp))
-
-        Button(onClick = {
-            navController.navigate(route = PantallasApp.Actualizar.route)
-        }) {
-            Text(text = "Actualizar Dragones")
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    shape = roundCornerShape
+                )
+                .clip(roundCornerShape)
+                .clickable {
+                    navController.navigate(route = PantallasApp.ConsultarDragon.route)
+                }
+                .padding(PaddingValues(horizontal = 60.dp, vertical = 16.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Consultar Dragones",
+                fontSize = 26.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
         }
-
         Spacer(modifier = Modifier.padding(16.dp))
-
-        Button(onClick = {
-            navController.navigate(route = PantallasApp.Eliminar.route)
-        }) {
-            Text(text = "Eliminar Dragones")
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    shape = roundCornerShape
+                )
+                .clip(roundCornerShape)
+                .clickable {
+                    navController.navigate(route = PantallasApp.Actualizar.route)
+                }
+                .padding(PaddingValues(horizontal = 60.dp, vertical = 16.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Actualizar Dragones",
+                fontSize = 26.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Spacer(modifier = Modifier.padding(16.dp))
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    shape = roundCornerShape
+                )
+                .clip(roundCornerShape)
+                .clickable {
+                    navController.navigate(route = PantallasApp.Eliminar.route)
+                }
+                .padding(PaddingValues(horizontal = 60.dp, vertical = 16.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Eliminar Dragones",
+                fontSize = 26.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

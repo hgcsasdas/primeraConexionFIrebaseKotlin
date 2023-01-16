@@ -2,18 +2,25 @@ package com.example.primeraconexionfirebase.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.primeraconexionfirebase.navigation.PantallasApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,16 +61,15 @@ fun EliminarDragon(){
     var nombre_coleccion = "dragones"
     var nombre_dragon by remember { mutableStateOf("") }
 
-
-
+    val gradientColors = listOf(Color(0xFF413846), Color(0xFF807C7C))
+    val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 100.dp)
-            .padding(start= 10.dp)
-            .padding(end= 10.dp)
+            .background(Color.LightGray)
+
     ) {
         Text(
             text = "Eliminar Dragon",
@@ -78,28 +84,39 @@ fun EliminarDragon(){
             singleLine = true,
         )
         Spacer(modifier = Modifier.size(5.dp))
-        Button(
-            onClick = {
-                if (nombre_dragon.isNotBlank()) {
-                    db.collection(nombre_coleccion)
-                        .document(nombre_dragon)
-                        .delete()
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Borrado correctamente", Toast.LENGTH_LONG).show()
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(context, "No se ha podido borrar", Toast.LENGTH_LONG).show()
-                        }
-                } },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Blue,
-                contentColor = Color.White
-            ),
-            border = BorderStroke(1.dp, Color.Black)
-        )
-        {
-            Text(text = "Borrar")
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.horizontalGradient(colors = gradientColors),
+                    shape = roundCornerShape
+                )
+                .fillMaxWidth()
+                .clip(roundCornerShape)
+                .clickable {
+                    if (nombre_dragon.isNotBlank()) {
+                        db.collection(nombre_coleccion)
+                            .document(nombre_dragon)
+                            .delete()
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Borrado correctamente", Toast.LENGTH_LONG).show()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(context, "No se ha podido borrar", Toast.LENGTH_LONG).show()
+                            }
+                        nombre_dragon = ""
+                    }
+                }
+        ) {
+            Text(
+                text = "Borrar Dragón",
+                fontSize = 26.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.size(300.dp, 40.dp)
+            )
         }
+
     }
 }
 
